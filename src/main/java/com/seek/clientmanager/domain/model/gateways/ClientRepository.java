@@ -1,0 +1,30 @@
+package com.seek.clientmanager.domain.model.gateways;
+
+import com.seek.clientmanager.domain.model.Client;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+public interface ClientRepository {
+
+    Flux<Client> findAll();
+
+    Flux<Integer> findAllAges();
+
+    Flux<Date> findAllBirthDates();
+
+    Flux<String> findAllNames();
+
+    Flux<String> findAllLastNames();
+
+    Mono<BigDecimal> findAverageAge();
+
+    Mono<Date> findMaxBirthDate();
+
+    Mono<Date> findMinBirthDate();
+
+    Mono<Date> findModeBirthDate();
+
+}
