@@ -8,6 +8,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Mapper(componentModel = "spring")
@@ -19,13 +21,25 @@ public interface ClientDAOMapper {
     @Mapping(target = "id", source = "id")
     ClientDAO toClientDAO(Client client);
 
-    Date toDate(String date);
+    default Date toDate(String date) {
+        try {
+            return new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    String fromDate(Date date);
+    default String fromDate(Date date) {
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
+    }
 
-    BigDecimal toBigDecimal(Double value);
+    default BigDecimal toBigDecimal(Double value) {
+        return value != null ? BigDecimal.valueOf(value) : null;
+    }
 
-    Double toDouble(BigDecimal value);
+    default Double toDouble(BigDecimal value) {
+        return value != null ? value.doubleValue() : null;
+    }
 
     default Mono<Client> toClient(Mono<ClientDAO> clientDAO) {
         return clientDAO.map(this::toClient);
