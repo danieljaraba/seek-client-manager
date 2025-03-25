@@ -21,6 +21,8 @@ public interface ClientRepository {
 
     Mono<BigDecimal> findAverageAge();
 
+    Mono<BigDecimal> findStdAge();
+
     Mono<Date> findMaxBirthDate();
 
     Mono<Date> findMinBirthDate();
