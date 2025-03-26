@@ -6,4 +6,14 @@ public record User(
         String password,
         String role
 ) {
+
+    public User changePassword(String newPassword) {
+        return new User(
+                id(),
+                email(),
+                newPassword,
+                role()
+        );
+    }
+
 }

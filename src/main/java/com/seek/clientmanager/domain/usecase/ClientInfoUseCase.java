@@ -4,6 +4,7 @@ import com.seek.clientmanager.domain.model.Client;
 import com.seek.clientmanager.domain.model.ClientDetail;
 import com.seek.clientmanager.domain.model.gateways.ClientRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class ClientInfoUseCase {
 

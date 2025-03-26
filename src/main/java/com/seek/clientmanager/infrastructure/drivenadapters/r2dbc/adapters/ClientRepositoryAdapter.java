@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Repository
@@ -22,6 +23,29 @@ public class ClientRepositoryAdapter implements ClientRepository {
     @Override
     public Flux<Client> findAll() {
         return clientDAORepository.findAll()
+                .map(mapper::toClient);
+    }
+
+    @Override
+    public Mono<Client> findById(String id) {
+        return clientDAORepository.findById(UUID.fromString(id))
+                .map(mapper::toClient);
+    }
+
+    @Override
+    public Mono<Client> save(Client client) {
+        return clientDAORepository.save(mapper.toClientDAO(client))
+                .map(mapper::toClient);
+    }
+
+    @Override
+    public Mono<Void> deleteById(String id) {
+        return clientDAORepository.deleteById(UUID.fromString(id));
+    }
+
+    @Override
+    public Mono<Client> update(Client client) {
+        return clientDAORepository.save(mapper.toClientDAO(client))
                 .map(mapper::toClient);
     }
 
