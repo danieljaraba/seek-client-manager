@@ -8,8 +8,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Mapper(componentModel = "spring")
@@ -21,16 +21,12 @@ public interface ClientDAOMapper {
     @Mapping(target = "id", source = "id")
     ClientDAO toClientDAO(Client client);
 
-    default Date toDate(String date) {
-        try {
-            return new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+    default Date toDate(LocalDate date) {
+        return Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
-    default String fromDate(Date date) {
-        return new SimpleDateFormat("yyyy-MM-dd").format(date);
+    default LocalDate fromDate(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     default BigDecimal toBigDecimal(Double value) {

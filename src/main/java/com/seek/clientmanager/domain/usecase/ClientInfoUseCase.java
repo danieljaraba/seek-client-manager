@@ -23,6 +23,7 @@ public class ClientInfoUseCase {
     public Flux<ClientDetail> findAllClientDetails() {
         return findAll()
                 .flatMap(this::mapToClientDetails)
+                .doOnNext(System.out::println)
                 .flatMap(this::calculateDaysToBirthday)
                 .flatMap(this::calculateDaysLiving)
                 .flatMap(this::calculateWeeksLiving)

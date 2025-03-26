@@ -7,9 +7,9 @@ CREATE SCHEMA IF NOT EXISTS seek;
 CREATE TABLE seek.clients (
     id CHAR(36) PRIMARY KEY,
     name VARCHAR(255),
-    lastName VARCHAR(255),
+    last_name VARCHAR(255),
     age INT,
-    birthDate DATE
+    birth_date DATE
 );
 
 -- Create users table

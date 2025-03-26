@@ -6,6 +6,7 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 public interface ClientDAORepository extends ReactiveCrudRepository<ClientDAO, UUID> {
@@ -14,7 +15,7 @@ public interface ClientDAORepository extends ReactiveCrudRepository<ClientDAO, U
     Flux<Integer> findAllAges();
 
     @Query("SELECT birth_date FROM clients")
-    Flux<String> findAllBirthdates();
+    Flux<LocalDate> findAllBirthdates();
 
     @Query("SELECT name FROM clients")
     Flux<String> findAllNames();
@@ -29,12 +30,12 @@ public interface ClientDAORepository extends ReactiveCrudRepository<ClientDAO, U
     Mono<Double> findStdAge();
 
     @Query("SELECT MAX(birth_date) FROM clients")
-    Mono<String> findMaxBirthDate();
+    Mono<LocalDate> findMaxBirthDate();
 
     @Query("SELECT MIN(birth_date) FROM clients")
-    Mono<String> findMinBirthDate();
+    Mono<LocalDate> findMinBirthDate();
 
     @Query("SELECT birth_date FROM clients GROUP BY birth_date ORDER BY COUNT(*) DESC LIMIT 1")
-    Mono<String> findModeBirthDate();
+    Mono<LocalDate> findModeBirthDate();
 
 }
