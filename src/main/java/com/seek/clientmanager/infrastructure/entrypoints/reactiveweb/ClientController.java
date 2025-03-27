@@ -26,7 +26,6 @@ public class ClientController {
     @ResponseStatus(HttpStatus.OK)
     public Flux<ClientWithStatsDTO> getAllClients() {
         return clientInfoUseCase.findAllClientDetails()
-                .doOnNext(clientDetail -> System.out.println("Client: " + clientDetail))
                 .map(ClientWithStatsDTO::fromClientDetail);
     }
 

@@ -5,7 +5,7 @@ CREATE SCHEMA IF NOT EXISTS seek;
 
 -- Create clients table
 CREATE TABLE seek.clients (
-    id CHAR(36) PRIMARY KEY,
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     name VARCHAR(255),
     last_name VARCHAR(255),
     age INT,
@@ -14,7 +14,8 @@ CREATE TABLE seek.clients (
 
 -- Create users table
 CREATE TABLE seek.users (
-    id CHAR(36) PRIMARY KEY,
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     email VARCHAR(255) UNIQUE,
-    password VARCHAR(255)
+    password VARCHAR(255),
+    role VARCHAR(255)
 );

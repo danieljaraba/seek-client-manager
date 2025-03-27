@@ -8,4 +8,10 @@ public interface SecurityGateway {
 
     Mono<Token> generateToken(User user);
 
+    Mono<Boolean> validateToken(String token);
+
+    Mono<String> getUsernameFromToken(String token);
+
+    Mono<String> getRoleFromToken(String token);
+
 }

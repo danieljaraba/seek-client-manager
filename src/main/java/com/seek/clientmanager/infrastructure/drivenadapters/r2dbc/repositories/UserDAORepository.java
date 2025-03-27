@@ -13,8 +13,7 @@ public interface UserDAORepository extends ReactiveCrudRepository<UserDAO, UUID>
     @Query("SELECT * FROM users WHERE email = :email")
     Mono<UserDAO> findByEmail(String email);
 
-    @Query("SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END FROM users WHERE email = :email")
-    Mono<Boolean> existsByEmail(String email);
+    Mono<Integer> countUserDAOByEmail(String email);
 
     @Query("SELECT password FROM users WHERE email = :email")
     Mono<String> findPasswordByEmail(String email);

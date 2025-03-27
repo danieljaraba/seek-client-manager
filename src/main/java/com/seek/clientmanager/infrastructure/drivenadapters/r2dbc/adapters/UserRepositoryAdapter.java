@@ -44,7 +44,8 @@ public class UserRepositoryAdapter implements UserRepository {
 
     @Override
     public Mono<Boolean> existsByEmail(String email) {
-        return userDAORepository.existsByEmail(email);
+        return userDAORepository.countUserDAOByEmail(email)
+                .map(count -> count > 0);
     }
 
     @Override

@@ -29,8 +29,9 @@ public class UserAuthUseCase {
     }
 
     public Mono<Token> register(User user) {
-        return userCrudUseCase.createUser(user)
-                .flatMap(securityGateway::generateToken);
+        return Mono.just(user.changeRole("ROLE_USER"))
+                        .flatMap(userCrudUseCase::createUser)
+                        .flatMap(securityGateway::generateToken);
     }
 
 }

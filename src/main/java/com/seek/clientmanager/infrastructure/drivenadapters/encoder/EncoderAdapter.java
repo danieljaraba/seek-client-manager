@@ -19,6 +19,6 @@ public class EncoderAdapter implements EncoderGateway {
 
     @Override
     public Mono<Boolean> matches(String value, String encodedValue) {
-        return null;
+        return Mono.just(passwordEncoder.matches(value, encodedValue));
     }
 }
