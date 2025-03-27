@@ -1,7 +1,10 @@
 package com.seek.clientmanager.infrastructure.drivenadapters.jwt;
 
+import com.seek.clientmanager.domain.model.enums.ErrorType;
+import com.seek.clientmanager.domain.model.exceptions.DomainException;
 import com.seek.clientmanager.domain.model.gateways.SecurityGateway;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,7 +31,7 @@ public class JwtAuthenticationManager implements ReactiveAuthenticationManager {
         return securityGateway.validateToken(token)
                 .flatMap(valid -> {
                     if (!valid) {
-                        return Mono.empty();
+                        return Mono.error(new BadCredentialsException("Invalid token"));
                     }
                     return securityGateway.getUsernameFromToken(token)
                             .zipWith(securityGateway.getRoleFromToken(token))

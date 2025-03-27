@@ -1,6 +1,7 @@
 package com.seek.clientmanager.domain.model.gateways;
 
 import com.seek.clientmanager.domain.model.User;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface UserRepository {
@@ -20,5 +21,9 @@ public interface UserRepository {
     Mono<User> update(User user);
 
     Mono<String> findPasswordByEmail(String email);
+
+    Flux<User> findAll();
+
+    Mono<Void> updateUserRole(String id, String role);
 
 }

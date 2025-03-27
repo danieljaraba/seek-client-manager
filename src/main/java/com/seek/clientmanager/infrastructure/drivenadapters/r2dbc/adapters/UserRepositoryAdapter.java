@@ -6,9 +6,8 @@ import com.seek.clientmanager.infrastructure.drivenadapters.r2dbc.helpers.UserDA
 import com.seek.clientmanager.infrastructure.drivenadapters.r2dbc.repositories.UserDAORepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.UUID;
 
 @AllArgsConstructor
 @Repository
@@ -33,13 +32,13 @@ public class UserRepositoryAdapter implements UserRepository {
 
     @Override
     public Mono<User> findById(String id) {
-        return userDAORepository.findById(UUID.fromString(id))
+        return userDAORepository.findById(id)
                 .map(mapper::toUser);
     }
 
     @Override
     public Mono<Void> deleteById(String id) {
-        return userDAORepository.deleteById(UUID.fromString(id));
+        return userDAORepository.deleteById(id);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class UserRepositoryAdapter implements UserRepository {
 
     @Override
     public Mono<Boolean> existsById(String id) {
-        return userDAORepository.existsById(UUID.fromString(id));
+        return userDAORepository.existsById(id);
     }
 
     @Override
@@ -64,5 +63,16 @@ public class UserRepositoryAdapter implements UserRepository {
     @Override
     public Mono<String> findPasswordByEmail(String email) {
         return userDAORepository.findPasswordByEmail(email);
+    }
+
+    @Override
+    public Flux<User> findAll() {
+        return userDAORepository.findAll()
+                .map(mapper::toUser);
+    }
+
+    @Override
+    public Mono<Void> updateUserRole(String id, String role) {
+        return userDAORepository.updateUserRole(id, role);
     }
 }

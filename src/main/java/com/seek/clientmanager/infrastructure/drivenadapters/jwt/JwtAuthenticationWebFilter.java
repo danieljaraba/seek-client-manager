@@ -1,5 +1,6 @@
 package com.seek.clientmanager.infrastructure.drivenadapters.jwt;
 
+import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.handler.CustomAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
@@ -14,10 +15,12 @@ import reactor.core.publisher.Mono;
 public class JwtAuthenticationWebFilter extends AuthenticationWebFilter {
 
     @Autowired
-    public JwtAuthenticationWebFilter(JwtAuthenticationManager authenticationManager) {
+    public JwtAuthenticationWebFilter(JwtAuthenticationManager authenticationManager,
+                                      CustomAuthenticationFailureHandler authenticationFailureHandler) {
         super(authenticationManager);
         setRequiresAuthenticationMatcher(ServerWebExchangeMatchers.anyExchange());
         setServerAuthenticationConverter(this::convert);
+        setAuthenticationFailureHandler(authenticationFailureHandler);
     }
 
     private Mono<Authentication> convert(ServerWebExchange exchange) {

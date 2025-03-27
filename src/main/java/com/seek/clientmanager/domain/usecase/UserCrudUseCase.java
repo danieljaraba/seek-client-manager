@@ -7,6 +7,7 @@ import com.seek.clientmanager.domain.model.gateways.EncoderGateway;
 import com.seek.clientmanager.domain.model.gateways.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
@@ -44,10 +45,21 @@ public class UserCrudUseCase {
                 .flatMap(userRepository::update);
     }
 
+    public Mono<User> updateUserRole(String id, String role) {
+        return userRepository.findById(id)
+                .switchIfEmpty(Mono.error(new DomainException(ErrorType.NOT_FOUND, "User not found")))
+                .flatMap(existingUser -> userRepository.updateUserRole(id, role))
+                .then(userRepository.findById(id));
+    }
+
     public Mono<Void> deleteUser(String id) {
         return userRepository.findById(id)
                 .switchIfEmpty(Mono.error(new DomainException(ErrorType.NOT_FOUND, "User not found")))
                 .flatMap(existingUser -> userRepository.deleteById(id));
+    }
+
+    public Flux<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
 }
