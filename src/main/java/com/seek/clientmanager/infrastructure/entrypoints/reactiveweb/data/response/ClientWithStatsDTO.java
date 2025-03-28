@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 
 @Builder
 public record ClientWithStatsDTO(
-        String id,
+        int id,
         String name,
         String lastName,
         int age,

@@ -1,14 +1,15 @@
 package com.seek.clientmanager.infrastructure.entrypoints.reactiveweb;
 
+import com.seek.clientmanager.domain.usecase.ClientCrudUseCase;
 import com.seek.clientmanager.domain.usecase.ClientInfoUseCase;
 import com.seek.clientmanager.domain.usecase.ClientsStatsUseCase;
+import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.data.request.EditClientDTO;
+import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.data.request.NewClientDTO;
+import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.data.response.ClientDTO;
 import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.data.response.ClientWithStatsDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -22,6 +23,35 @@ public class ClientController {
 
     private final ClientInfoUseCase clientInfoUseCase;
     private final ClientsStatsUseCase clientsStatsUseCase;
+    private final ClientCrudUseCase clientCrudUseCase;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono<ClientDTO> createClient(@RequestBody NewClientDTO clientDTO) {
+        return clientCrudUseCase.createClient(NewClientDTO.toClient(clientDTO))
+                .map(ClientDTO::fromClient);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<String> deleteClient(@PathVariable int id) {
+        return clientCrudUseCase.deleteClient(id)
+                .then(Mono.just("Client deleted successfully"));
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<ClientDTO> updateClient(@RequestBody EditClientDTO clientDTO) {
+        return clientCrudUseCase.updateClient(EditClientDTO.toClient(clientDTO))
+                .map(ClientDTO::fromClient);
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<ClientDTO> getClientById(@PathVariable int id) {
+        return clientCrudUseCase.findById(id)
+                .map(ClientDTO::fromClient);
+    }
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)

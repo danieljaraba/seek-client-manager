@@ -5,7 +5,9 @@ import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Mono;
 
-public interface UserDAORepository extends ReactiveCrudRepository<UserDAO, String> {
+import java.util.UUID;
+
+public interface UserDAORepository extends ReactiveCrudRepository<UserDAO, Integer> {
 
     @Query("SELECT * FROM users WHERE email = :email")
     Mono<UserDAO> findByEmail(String email);
@@ -16,5 +18,5 @@ public interface UserDAORepository extends ReactiveCrudRepository<UserDAO, Strin
     Mono<String> findPasswordByEmail(String email);
 
     @Query("UPDATE users SET role = :role WHERE id = :id")
-    Mono<Void> updateUserRole(String id, String role);
+    Mono<Void> updateUserRole(int id, String role);
 }

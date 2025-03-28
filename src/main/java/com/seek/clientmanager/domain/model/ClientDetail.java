@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Builder
 public record ClientDetail(
-        String id,
+        int id,
         String name,
         String lastName,
         int age,

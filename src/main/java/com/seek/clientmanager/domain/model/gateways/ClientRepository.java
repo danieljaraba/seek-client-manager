@@ -11,11 +11,11 @@ public interface ClientRepository {
 
     Flux<Client> findAll();
 
-    Mono<Client> findById(String id);
+    Mono<Client> findById(int id);
 
     Mono<Client> save(Client client);
 
-    Mono<Void> deleteById(String id);
+    Mono<Void> deleteById(int id);
 
     Mono<Client> update(Client client);
 

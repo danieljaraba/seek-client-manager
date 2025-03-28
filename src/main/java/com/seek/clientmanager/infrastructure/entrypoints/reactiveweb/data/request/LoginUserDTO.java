@@ -9,7 +9,7 @@ public record LoginUserDTO(
 
     public User toUser() {
         return new User(
-                null,
+                0,
                 email(),
                 password(),
                 null

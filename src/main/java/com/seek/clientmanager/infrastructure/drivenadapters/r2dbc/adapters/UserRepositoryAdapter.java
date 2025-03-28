@@ -31,13 +31,13 @@ public class UserRepositoryAdapter implements UserRepository {
     }
 
     @Override
-    public Mono<User> findById(String id) {
+    public Mono<User> findById(int id) {
         return userDAORepository.findById(id)
                 .map(mapper::toUser);
     }
 
     @Override
-    public Mono<Void> deleteById(String id) {
+    public Mono<Void> deleteById(int id) {
         return userDAORepository.deleteById(id);
     }
 
@@ -48,7 +48,7 @@ public class UserRepositoryAdapter implements UserRepository {
     }
 
     @Override
-    public Mono<Boolean> existsById(String id) {
+    public Mono<Boolean> existsById(int id) {
         return userDAORepository.existsById(id);
     }
 
@@ -72,7 +72,7 @@ public class UserRepositoryAdapter implements UserRepository {
     }
 
     @Override
-    public Mono<Void> updateUserRole(String id, String role) {
+    public Mono<Void> updateUserRole(int id, String role) {
         return userDAORepository.updateUserRole(id, role);
     }
 }

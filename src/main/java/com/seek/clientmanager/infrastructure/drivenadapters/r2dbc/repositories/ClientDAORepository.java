@@ -1,7 +1,6 @@
 package com.seek.clientmanager.infrastructure.drivenadapters.r2dbc.repositories;
 
 import com.seek.clientmanager.infrastructure.drivenadapters.r2dbc.data.ClientDAO;
-import io.micrometer.core.instrument.config.MeterFilter;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
@@ -10,7 +9,7 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public interface ClientDAORepository extends ReactiveCrudRepository<ClientDAO, UUID> {
+public interface ClientDAORepository extends ReactiveCrudRepository<ClientDAO, Integer> {
 
     @Query("SELECT age FROM clients")
     Flux<Integer> findAllAges();

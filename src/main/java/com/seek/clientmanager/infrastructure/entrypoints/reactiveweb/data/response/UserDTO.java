@@ -3,7 +3,7 @@ package com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.data.respo
 import com.seek.clientmanager.domain.model.User;
 
 public record UserDTO(
-        String id,
+        int id,
         String email,
         String role
 ) {

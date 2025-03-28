@@ -10,13 +10,13 @@ public interface UserRepository {
 
     Mono<User> save(User user);
 
-    Mono<User> findById(String id);
+    Mono<User> findById(int id);
 
-    Mono<Void> deleteById(String id);
+    Mono<Void> deleteById(int id);
 
     Mono<Boolean> existsByEmail(String email);
 
-    Mono<Boolean> existsById(String id);
+    Mono<Boolean> existsById(int id);
 
     Mono<User> update(User user);
 
@@ -24,6 +24,6 @@ public interface UserRepository {
 
     Flux<User> findAll();
 
-    Mono<Void> updateUserRole(String id, String role);
+    Mono<Void> updateUserRole(int id, String role);
 
 }

@@ -11,14 +11,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public interface ClientDAOMapper {
 
-    @Mapping(target = "id", source = "id")
     Client toClient(ClientDAO clientDAO);
 
-    @Mapping(target = "id", source = "id")
     ClientDAO toClientDAO(Client client);
 
     default Date toDate(LocalDate date) {

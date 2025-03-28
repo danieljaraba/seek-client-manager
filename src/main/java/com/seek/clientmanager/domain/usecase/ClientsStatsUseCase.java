@@ -1,7 +1,6 @@
 package com.seek.clientmanager.domain.usecase;
 
 import com.seek.clientmanager.domain.model.gateways.ClientRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;

@@ -5,13 +5,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @Table("clients")
 public class ClientDAO {
 
     @Id
-    private String id;
+    private int id;
     private String name;
     private String lastName;
     private int age;

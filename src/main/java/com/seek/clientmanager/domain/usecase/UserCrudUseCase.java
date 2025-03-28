@@ -18,12 +18,13 @@ public class UserCrudUseCase {
     private final EncoderGateway passwordEncoder;
 
     public Mono<User> createUser(User user) {
-        return userRepository.existsByEmail(user.email())
+        return Mono.just(user)
+                .flatMap(existingUser -> userRepository.existsByEmail(existingUser.email()))
                 .flatMap(exists -> {
                     if (exists) {
                         return Mono.error(new DomainException(ErrorType.ALREADY_EXISTS, "User already exists"));
                     }
-                    return encodePassword(user);
+                    return Mono.just(user);
                 })
                 .flatMap(userRepository::save);
     }
@@ -33,7 +34,7 @@ public class UserCrudUseCase {
                 .map(user::changePassword);
     }
 
-    public Mono<User> findById(String id) {
+    public Mono<User> findById(int id) {
         return userRepository.findById(id)
                 .switchIfEmpty(Mono.error(new DomainException(ErrorType.NOT_FOUND, "User not found")));
     }
@@ -45,14 +46,14 @@ public class UserCrudUseCase {
                 .flatMap(userRepository::update);
     }
 
-    public Mono<User> updateUserRole(String id, String role) {
+    public Mono<User> updateUserRole(int id, String role) {
         return userRepository.findById(id)
                 .switchIfEmpty(Mono.error(new DomainException(ErrorType.NOT_FOUND, "User not found")))
                 .flatMap(existingUser -> userRepository.updateUserRole(id, role))
                 .then(userRepository.findById(id));
     }
 
-    public Mono<Void> deleteUser(String id) {
+    public Mono<Void> deleteUser(int id) {
         return userRepository.findById(id)
                 .switchIfEmpty(Mono.error(new DomainException(ErrorType.NOT_FOUND, "User not found")))
                 .flatMap(existingUser -> userRepository.deleteById(id));

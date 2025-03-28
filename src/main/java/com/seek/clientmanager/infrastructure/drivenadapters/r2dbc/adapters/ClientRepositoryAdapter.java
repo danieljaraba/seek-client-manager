@@ -27,8 +27,8 @@ public class ClientRepositoryAdapter implements ClientRepository {
     }
 
     @Override
-    public Mono<Client> findById(String id) {
-        return clientDAORepository.findById(UUID.fromString(id))
+    public Mono<Client> findById(int id) {
+        return clientDAORepository.findById(id)
                 .map(mapper::toClient);
     }
 
@@ -39,8 +39,8 @@ public class ClientRepositoryAdapter implements ClientRepository {
     }
 
     @Override
-    public Mono<Void> deleteById(String id) {
-        return clientDAORepository.deleteById(UUID.fromString(id));
+    public Mono<Void> deleteById(int id) {
+        return clientDAORepository.deleteById(id);
     }
 
     @Override

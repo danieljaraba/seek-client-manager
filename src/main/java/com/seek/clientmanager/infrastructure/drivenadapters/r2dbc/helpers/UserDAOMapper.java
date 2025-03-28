@@ -7,13 +7,13 @@ import org.mapstruct.Mapping;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Mapper(componentModel = "spring")
 public interface UserDAOMapper {
 
-    @Mapping(target = "id", source = "id")
     User toUser(UserDAO userDAO);
 
-    @Mapping(target = "id", source = "id")
     UserDAO toUserDAO(User user);
 
     default Mono<User> toUser(Mono<UserDAO> userDAO) {

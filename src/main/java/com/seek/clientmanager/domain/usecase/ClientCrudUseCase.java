@@ -15,10 +15,11 @@ public class ClientCrudUseCase {
     private final ClientRepository clientRepository;
 
     public Mono<Client> createClient(Client client) {
-        return clientRepository.save(client);
+        return Mono.just(client)
+                    .flatMap(clientRepository::save);
     }
 
-    public Mono<Client> findById(String id) {
+    public Mono<Client> findById(int id) {
         return clientRepository.findById(id)
                 .switchIfEmpty(Mono.error(new DomainException(ErrorType.NOT_FOUND, "Client not found")));
     }
@@ -29,7 +30,7 @@ public class ClientCrudUseCase {
                 .flatMap(existingClient -> clientRepository.update(client));
     }
 
-    public Mono<Void> deleteClient(String id) {
+    public Mono<Void> deleteClient(int id) {
         return clientRepository.findById(id)
                 .switchIfEmpty(Mono.error(new DomainException(ErrorType.NOT_FOUND, "Client not found")))
                 .flatMap(existingClient -> clientRepository.deleteById(id));

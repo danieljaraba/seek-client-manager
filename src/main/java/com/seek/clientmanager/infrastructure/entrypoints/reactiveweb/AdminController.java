@@ -27,7 +27,7 @@ public class AdminController {
 
     @DeleteMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    Mono<String> deleteUser(@PathVariable String id) {
+    Mono<String> deleteUser(@PathVariable int id) {
         return userCrudUseCase.deleteUser(id)
                 .then(Mono.just("User deleted successfully"));
     }
