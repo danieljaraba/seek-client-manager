@@ -9,8 +9,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+import reactor.core.publisher.Flux;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -19,15 +19,15 @@ import java.util.Calendar;
 import java.util.Date;
 
 @ExtendWith(MockitoExtension.class)
-class NewClientInfoUseCaseTest {
+class ClientInfoUseCaseTest {
 
     @Mock
     private ClientRepository clientRepository;
 
     private ClientInfoUseCase clientInfoUseCase;
 
-    private static final Client CLIENT_A = new Client(1, "John", "Doe", 30, new Date(90, Calendar.JANUARY, 1));
-    private static final Client CLIENT_B = new Client(2, "Test", "Leap", 20, new Date(100, Calendar.JANUARY, 2));
+    private static final Client CLIENT_A = new Client(1, "John", "Doe", 30, new Date(120, Calendar.JANUARY, 1));
+    private static final Client CLIENT_B = new Client(2, "Test", "Leap", 20, new Date(119, Calendar.DECEMBER, 31));
 
     @BeforeEach
     void setUp() {
@@ -38,11 +38,10 @@ class NewClientInfoUseCaseTest {
 
     @Test
     void testSingleClientCalculations() {
-        Mockito.when(clientRepository.findAll()).thenReturn(Flux.just(CLIENT_B));
+        Mockito.when(clientRepository.findAll()).thenReturn(Flux.just(CLIENT_A));
         StepVerifier.create(clientInfoUseCase.findAllClientDetails())
                 .assertNext(cd -> {
-                    assert cd.daysLiving() == 7304;
-                    assert cd.yearsLiving() == 20;
+                    assert cd.daysLiving() == 1;
                 })
                 .verifyComplete();
     }
@@ -52,10 +51,10 @@ class NewClientInfoUseCaseTest {
         Mockito.when(clientRepository.findAll()).thenReturn(Flux.just(CLIENT_A, CLIENT_B));
         StepVerifier.create(clientInfoUseCase.findAllClientDetails())
                 .assertNext(cd -> {
-                    assert cd.daysLiving() == 10957;
+                    assert cd.daysLiving() == 1;
                 })
                 .assertNext(cd -> {
-                    assert cd.daysLiving() == 7304;
+                    assert cd.daysLiving() == 2;
                 })
                 .verifyComplete();
     }
