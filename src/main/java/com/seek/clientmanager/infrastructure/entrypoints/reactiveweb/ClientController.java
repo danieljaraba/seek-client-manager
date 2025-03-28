@@ -7,6 +7,7 @@ import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.data.reques
 import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.data.request.NewClientDTO;
 import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.data.response.ClientDTO;
 import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.data.response.ClientWithStatsDTO;
+import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.helpers.ClientValidator;
 import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.interfaces.ClientAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,27 +24,34 @@ public class ClientController implements ClientAPI {
     private final ClientInfoUseCase clientInfoUseCase;
     private final ClientsStatsUseCase clientsStatsUseCase;
     private final ClientCrudUseCase clientCrudUseCase;
+    private final ClientValidator clientValidator;
 
     @Override
-    public Mono<ClientDTO> createClient(@RequestBody NewClientDTO clientDTO) {
-        return clientCrudUseCase.createClient(NewClientDTO.toClient(clientDTO))
-                .map(ClientDTO::fromClient);
+    public Mono<ClientDTO> createClient(NewClientDTO clientDTO) {
+        return Mono.just(clientDTO)
+                        .flatMap(clientValidator::validateClient)
+                        .map(NewClientDTO::toClient)
+                        .flatMap(clientCrudUseCase::createClient)
+                        .map(ClientDTO::fromClient);
     }
 
     @Override
-    public Mono<String> deleteClient(@PathVariable int id) {
+    public Mono<String> deleteClient(int id) {
         return clientCrudUseCase.deleteClient(id)
                 .then(Mono.just("Client deleted successfully"));
     }
 
     @Override
-    public Mono<ClientDTO> updateClient(@RequestBody EditClientDTO clientDTO) {
-        return clientCrudUseCase.updateClient(EditClientDTO.toClient(clientDTO))
+    public Mono<ClientDTO> updateClient(EditClientDTO clientDTO) {
+        return Mono.just(clientDTO)
+                .flatMap(clientValidator::validateClient)
+                .map(EditClientDTO::toClient)
+                .flatMap(clientCrudUseCase::updateClient)
                 .map(ClientDTO::fromClient);
     }
 
     @Override
-    public Mono<ClientDTO> getClientById(@PathVariable int id) {
+    public Mono<ClientDTO> getClientById(int id) {
         return clientCrudUseCase.findById(id)
                 .map(ClientDTO::fromClient);
     }

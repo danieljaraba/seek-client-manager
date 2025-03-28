@@ -16,9 +16,11 @@ public class UserCrudUseCase {
 
     private final UserRepository userRepository;
     private final EncoderGateway passwordEncoder;
+    private final String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
     public Mono<User> createUser(User user) {
         return Mono.just(user)
+                .flatMap(this::validateClient)
                 .flatMap(existingUser -> userRepository.existsByEmail(existingUser.email()))
                 .flatMap(exists -> {
                     if (exists) {
@@ -61,6 +63,19 @@ public class UserCrudUseCase {
 
     public Flux<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    private  Mono<User> validateClient(User user) {
+        return Mono.just(user)
+                .flatMap(existingUser -> {
+                    if (existingUser.email() == null || !existingUser.email().matches(emailRegex)) {
+                        return Mono.error(new DomainException(ErrorType.INVALID_DATA, "Invalid email format"));
+                    }
+                    if (existingUser.password() == null || existingUser.password().length() < 8) {
+                        return Mono.error(new DomainException(ErrorType.INVALID_DATA, "Password must be at least 8 characters long"));
+                    }
+                    return Mono.just(existingUser);
+                });
     }
 
 }

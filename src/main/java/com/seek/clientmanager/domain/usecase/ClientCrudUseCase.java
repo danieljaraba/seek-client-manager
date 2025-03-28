@@ -16,6 +16,7 @@ public class ClientCrudUseCase {
 
     public Mono<Client> createClient(Client client) {
         return Mono.just(client)
+                    .flatMap(this::validateClient)
                     .flatMap(clientRepository::save);
     }
 
@@ -34,6 +35,15 @@ public class ClientCrudUseCase {
         return clientRepository.findById(id)
                 .switchIfEmpty(Mono.error(new DomainException(ErrorType.NOT_FOUND, "Client not found")))
                 .flatMap(existingClient -> clientRepository.deleteById(id));
+    }
+
+    private Mono<Client> validateClient(Client client) {
+        return Mono.just(client)
+                .filter(c -> c.name()!= null && !c.name().isEmpty())
+                .switchIfEmpty(Mono.error(new DomainException(ErrorType.INVALID_DATA, "First name is required")))
+                .flatMap(c -> Mono.just(c)
+                        .filter(c1 -> c1.lastName() != null && !c1.lastName().isEmpty())
+                        .switchIfEmpty(Mono.error(new DomainException(ErrorType.INVALID_DATA, "Last name is required"))));
     }
 
 }

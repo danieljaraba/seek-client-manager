@@ -10,6 +10,7 @@ import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.data.reques
 import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.data.request.NewClientDTO;
 import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.data.response.ClientDTO;
 import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.data.response.ClientWithStatsDTO;
+import com.seek.clientmanager.infrastructure.entrypoints.reactiveweb.helpers.ClientValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,6 +40,9 @@ class ClientControllerTest {
     @Mock
     private ClientCrudUseCase clientCrudUseCase;
 
+    @Mock
+    private ClientValidator clientValidator;
+
     @InjectMocks
     private ClientController clientController;
 
@@ -65,6 +69,7 @@ class ClientControllerTest {
     @Test
     void createClient() {
         when(clientCrudUseCase.createClient(any())).thenReturn(Mono.just(dummyClient));
+        when(clientValidator.validateClient((NewClientDTO) any())).thenReturn(Mono.just(newClientDTO));
 
         Mono<ClientDTO> result = clientController.createClient(newClientDTO);
 
@@ -90,6 +95,7 @@ class ClientControllerTest {
         Client updatedClient = new Client(1, "Updated Client", "updated@example.com", 35, dummyDate);
         ClientDTO updatedClientDTO = ClientDTO.fromClient(updatedClient);
         when(clientCrudUseCase.updateClient(any())).thenReturn(Mono.just(updatedClient));
+        when(clientValidator.validateClient((EditClientDTO) any())).thenReturn(Mono.just(editClientDTO));
 
         Mono<ClientDTO> result = clientController.updateClient(editClientDTO);
 

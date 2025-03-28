@@ -12,7 +12,8 @@ public enum ErrorType {
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error: %s"),
     ALREADY_EXISTS(HttpStatus.CONFLICT, "Resource already exists: %s"),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "Invalid token: %s"),
-    UNPROCESSABLE_ENTITY(HttpStatus.UNPROCESSABLE_ENTITY, "Unprocessable entity: %s");
+    UNPROCESSABLE_ENTITY(HttpStatus.UNPROCESSABLE_ENTITY, "Unprocessable entity: %s"),
+    INVALID_DATA(HttpStatus.UNPROCESSABLE_ENTITY, "Invalid data: %s" ),;
 
     private final HttpStatus httpStatus;
     private final String description;
