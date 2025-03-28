@@ -5,9 +5,11 @@ import com.seek.clientmanager.domain.model.ClientDetail;
 import com.seek.clientmanager.domain.model.gateways.ClientRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -18,6 +20,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
+@ExtendWith(MockitoExtension.class)
 class ClientInfoUseCaseTest {
 
     @Mock
@@ -25,9 +28,9 @@ class ClientInfoUseCaseTest {
 
     private ClientInfoUseCase clientInfoUseCase;
 
-    private static final Client CLIENT1 = new Client("1", "John", "Doe", 30, new Date(90, Calendar.JANUARY, 1));
-    private static final Client CLIENT2 = new Client("2", "Jane", "Doe", 25, new Date(95, Calendar.FEBRUARY, 1));
-    private static final Client CLIENT3 = new Client("3", "Alice", "Smith", 35, new Date(85, Calendar.JANUARY, 2));
+    private static final Client CLIENT1 = new Client(1, "John", "Doe", 30, new Date(90, Calendar.JANUARY, 1));
+    private static final Client CLIENT2 = new Client(2, "Jane", "Doe", 25, new Date(95, Calendar.FEBRUARY, 1));
+    private static final Client CLIENT3 = new Client(3, "Alice", "Smith", 35, new Date(85, Calendar.JANUARY, 2));
 
     @BeforeEach
     void setUp() {
@@ -83,8 +86,8 @@ class ClientInfoUseCaseTest {
 
         StepVerifier.create(clientDetailsFlux)
                 .expectNextMatches(clientDetail -> clientDetail.birthDate().equals(new Date(90, 0, 1)))
-                .expectNextMatches(clientDetail -> clientDetail.birthDate().equals(new Date(95, 0, 1)))
-                .expectNextMatches(clientDetail -> clientDetail.birthDate().equals(new Date(85, 0, 1)))
+                .expectNextMatches(clientDetail -> clientDetail.birthDate().equals(new Date(95, 1, 1)))
+                .expectNextMatches(clientDetail -> clientDetail.birthDate().equals(new Date(85, 0, 2)))
                 .verifyComplete();
     }
 

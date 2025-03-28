@@ -3,15 +3,18 @@ package com.seek.clientmanager.domain.usecase;
 import com.seek.clientmanager.domain.model.gateways.ClientRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+@ExtendWith(MockitoExtension.class)
 class ClientsStatsUseCaseTest {
 
     @Mock
