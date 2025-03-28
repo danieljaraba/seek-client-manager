@@ -29,7 +29,10 @@ public class SecurityConfig {
                 exchange.pathMatchers("/auth/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**")
+                                "/v3/api-docs/**",
+                                "/actuator/**",
+                                "/webjars/**",
+                                "/v3/**")
                         .permitAll();
                 exchange.anyExchange().authenticated();
             })
