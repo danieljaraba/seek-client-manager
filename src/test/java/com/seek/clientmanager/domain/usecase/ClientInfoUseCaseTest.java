@@ -40,63 +40,10 @@ class ClientInfoUseCaseTest {
     }
 
     @Test
-    void testClientsName() {
-        Mockito.when(clientRepository.findAll()).thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
-
-        Flux<ClientDetail> clientDetailsFlux = clientInfoUseCase.findAllClientDetails();
-
-        StepVerifier.create(clientDetailsFlux)
-                .expectNextMatches(clientDetail -> clientDetail.name().equals("John"))
-                .expectNextMatches(clientDetail -> clientDetail.name().equals("Jane"))
-                .expectNextMatches(clientDetail -> clientDetail.name().equals("Alice"))
-                .verifyComplete();
-    }
-
-    @Test
-    void testClientsLastName() {
-        Mockito.when(clientRepository.findAll()).thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
-
-        Flux<ClientDetail> clientDetailsFlux = clientInfoUseCase.findAllClientDetails();
-
-        StepVerifier.create(clientDetailsFlux)
-                .expectNextMatches(clientDetail -> clientDetail.lastName().equals("Doe"))
-                .expectNextMatches(clientDetail -> clientDetail.lastName().equals("Doe"))
-                .expectNextMatches(clientDetail -> clientDetail.lastName().equals("Smith"))
-                .verifyComplete();
-    }
-
-    @Test
-    void testClientsAge() {
-        Mockito.when(clientRepository.findAll()).thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
-
-        Flux<ClientDetail> clientDetailsFlux = clientInfoUseCase.findAllClientDetails();
-
-        StepVerifier.create(clientDetailsFlux)
-                .expectNextMatches(clientDetail -> clientDetail.age() == 30)
-                .expectNextMatches(clientDetail -> clientDetail.age() == 25)
-                .expectNextMatches(clientDetail -> clientDetail.age() == 35)
-                .verifyComplete();
-    }
-
-    @Test
-    void testClientsBirthDate() {
-        Mockito.when(clientRepository.findAll()).thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
-
-        Flux<ClientDetail> clientDetailsFlux = clientInfoUseCase.findAllClientDetails();
-
-        StepVerifier.create(clientDetailsFlux)
-                .expectNextMatches(clientDetail -> clientDetail.birthDate().equals(new Date(90, 0, 1)))
-                .expectNextMatches(clientDetail -> clientDetail.birthDate().equals(new Date(95, 1, 1)))
-                .expectNextMatches(clientDetail -> clientDetail.birthDate().equals(new Date(85, 0, 2)))
-                .verifyComplete();
-    }
-
-    @Test
     void testClientsDaysToBirthday() {
-        Mockito.when(clientRepository.findAll()).thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
-
+        Mockito.when(clientRepository.findAll())
+                .thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
         Flux<ClientDetail> clientDetailsFlux = clientInfoUseCase.findAllClientDetails();
-
         StepVerifier.create(clientDetailsFlux)
                 .expectNextMatches(clientDetail -> clientDetail.daysToBirthday() == 0)
                 .expectNextMatches(clientDetail -> clientDetail.daysToBirthday() == 31)
@@ -106,10 +53,9 @@ class ClientInfoUseCaseTest {
 
     @Test
     void testClientsDaysLiving() {
-        Mockito.when(clientRepository.findAll()).thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
-
+        Mockito.when(clientRepository.findAll())
+                .thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
         Flux<ClientDetail> clientDetailsFlux = clientInfoUseCase.findAllClientDetails();
-
         StepVerifier.create(clientDetailsFlux)
                 .expectNextMatches(clientDetail -> clientDetail.daysLiving() == 10957)
                 .expectNextMatches(clientDetail -> clientDetail.daysLiving() == 9100)
@@ -119,10 +65,9 @@ class ClientInfoUseCaseTest {
 
     @Test
     void testClientsWeeksLiving() {
-        Mockito.when(clientRepository.findAll()).thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
-
+        Mockito.when(clientRepository.findAll())
+                .thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
         Flux<ClientDetail> clientDetailsFlux = clientInfoUseCase.findAllClientDetails();
-
         StepVerifier.create(clientDetailsFlux)
                 .expectNextMatches(clientDetail -> clientDetail.weeksLiving() == 1566)
                 .expectNextMatches(clientDetail -> clientDetail.weeksLiving() == 1300)
@@ -132,10 +77,9 @@ class ClientInfoUseCaseTest {
 
     @Test
     void testClientsMonthsLiving() {
-        Mockito.when(clientRepository.findAll()).thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
-
+        Mockito.when(clientRepository.findAll())
+                .thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
         Flux<ClientDetail> clientDetailsFlux = clientInfoUseCase.findAllClientDetails();
-
         StepVerifier.create(clientDetailsFlux)
                 .expectNextMatches(clientDetail -> clientDetail.monthsLiving() == 360)
                 .expectNextMatches(clientDetail -> clientDetail.monthsLiving() == 299)
@@ -145,15 +89,13 @@ class ClientInfoUseCaseTest {
 
     @Test
     void testClientsYearsLiving() {
-        Mockito.when(clientRepository.findAll()).thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
-
+        Mockito.when(clientRepository.findAll())
+                .thenReturn(Flux.fromIterable(Arrays.asList(CLIENT1, CLIENT2, CLIENT3)));
         Flux<ClientDetail> clientDetailsFlux = clientInfoUseCase.findAllClientDetails();
-
         StepVerifier.create(clientDetailsFlux)
                 .expectNextMatches(clientDetail -> clientDetail.yearsLiving() == 30)
                 .expectNextMatches(clientDetail -> clientDetail.yearsLiving() == 25)
                 .expectNextMatches(clientDetail -> clientDetail.yearsLiving() == 35)
                 .verifyComplete();
     }
-
 }

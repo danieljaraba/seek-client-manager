@@ -1,10 +1,70 @@
+version: "3.8"
+
 services:
   mysql:
-    image: 'mysql:latest'
+    image: mysql:latest
     environment:
-      - 'MYSQL_DATABASE=mydatabase'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+      MYSQL_DATABASE: seek
+      MYSQL_PASSWORD: verysecret
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_USER: myuser
     ports:
-      - '3306'
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  client-manager:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_APPLICATION_NAME: client-manager
+      SPRING_R2DBC_URL: r2dbc:mysql://mysql:3306/seek
+      SPRING_R2DBC_USERNAME: root
+      SPRING_R2DBC_PASSWORD: verysecret
+      SPRING_R2DBC_NAME: seek
+      SPRING_R2DBC_HOST: mysql
+      SPRING_R2DBC_PORT: "3306"
+      SPRING_R2DBC_POOL_ENABLED: "true"
+      SPRING_R2DBC_POOL_INITIAL_SIZE: "10"
+      SPRING_R2DBC_POOL_MAX_SIZE: "20"
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_URL: jdbc:mysql://mysql:3306/seek
+      SPRING_FLYWAY_USER: root
+      SPRING_FLYWAY_PASSWORD: verysecret
+      SPRING_FLYWAY_SCHEMAS: seek
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      ADAPTER_JWT_SECRET: secretkeyencodedinbase64longenoughfor256bits
+      ADAPTER_JWT_EXPIRATION: "86400000"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: prometheus
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - client-manager
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    depends_on:
+      - prometheus
+
+volumes:
+  mysql-data:
